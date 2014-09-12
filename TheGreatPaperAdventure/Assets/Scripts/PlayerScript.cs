@@ -43,8 +43,9 @@ public class PlayerScript : MonoBehaviour {
 			{
 				// false because the player is not an enemy
 				weapon.Attack(false);
-				// Shooting SFX
-				SoundEffectsHelper.Instance.MakePlayerShotSound();
+				// Shooting SFX. Taken out because it wasn't syncing with
+				// the cooldown.
+				// SoundEffectsHelper.Instance.MakePlayerShotSound();
 			}
 		}
 

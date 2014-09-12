@@ -71,6 +71,12 @@ public class WeaponScript : MonoBehaviour {
 				move.direction = this.transform.right;
 				// "Towards" in 2D space is the right of the sprite
 			}
+
+			// Sound Effect Plays (player only)
+			if (!isEnemy)
+			{
+				SoundEffectsHelper.Instance.MakePlayerShotSound();
+			}
 		}
 	}
 
