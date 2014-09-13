@@ -15,6 +15,7 @@ public class SoundEffectsHelper : MonoBehaviour
 	public AudioClip explosionSound;
 	public AudioClip playerShotSound;
 	public AudioClip enemyShotSound;
+	public AudioClip thrusterSound;
 	
 	void Awake()
 	{
@@ -40,7 +41,11 @@ public class SoundEffectsHelper : MonoBehaviour
 	{
 		MakeSound(enemyShotSound);
 	}
-	
+	public void MakeThrusterSound()
+	{
+		MakeSound (thrusterSound);
+	}
+
 	/// <summary>
 	/// Play a given sound
 	/// </summary>

@@ -19,18 +19,21 @@ public class PlayerScript : MonoBehaviour {
 	// 2 - Store the movement
 	private Vector2 movement;
 
+	// Dampening universal number.
+	public int damp = 5;
+
+	public float thrusterCD = 0.5f;
+
+
 	// Update is called once per frame
 	void Update () {
 		// 3 - Retrieve axis information
+		/*
 		float inputX = Input.GetAxis ("Horizontal");
 		float inputY = Input.GetAxis ("Vertical");
-
+		*/
 		// 4 - Movement per direction
-		bool shoot = Input.GetButton("Fire1");
-		shoot |= Input.GetButton("Fire2");
-		movement = new Vector2(
-			speed.x * inputX,
-			speed.y * inputY );
+		bool shoot = Input.GetButton("Jump");
 		// 5 - Shooting
 	
 		// Careful: For Mac users, ctrl + arrow is a bad idea
@@ -77,13 +80,37 @@ public class PlayerScript : MonoBehaviour {
 			transform.position.z
 		);
 
+		if (thrusterCD > 0) {
+			thrusterCD -= Time.deltaTime;
+		}
+
 		//End of update method
 	}
 	
 	void FixedUpdate()
 	{
-		// 6 - Move the game object
-		rigidbody2D.velocity = movement;
+		if (Input.GetButton("Fire1") && thrusterCD <= 0 )
+		{
+			Vector3 mouseIn = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+			float relativeX = mouseIn.x - transform.position.x;
+			float relativeY = mouseIn.y - transform.position.y;
+			// Movement dampening.
+			float inputX = relativeX / damp;
+			float inputY = relativeY / damp;
+
+			ThrusterScript thruster = GetComponent<ThrusterScript>();
+			if (thruster != null)
+			{
+				thruster.Push(relativeX, relativeY);
+			}
+			movement = new Vector2(
+				speed.x * Mathf.Clamp (inputX, -1, 1) ,
+				speed.y * Mathf.Clamp (inputY, -1, 1) );
+			// 6 - Move the game object
+			rigidbody2D.velocity = movement;
+
+			thrusterCD = 0.5f;
+		}
 	}
 
 	void OnCollisionEnter2D(Collision2D collision)
