@@ -16,33 +16,21 @@ public class PlayerScript : MonoBehaviour {
 	// 1 - The Speed of the ship
 	public Vector2 speed = new Vector2(50, 50);
 
-	private Vector3 mouseIn;
 	// 2 - Store the movement
 	private Vector2 movement;
 
 	// Update is called once per frame
 	void Update () {
-		/* 3 - Retrieve axis information
+		// 3 - Retrieve axis information
 		float inputX = Input.GetAxis ("Horizontal");
 		float inputY = Input.GetAxis ("Vertical");
-		*/
-		float mouseX = 0;
-		float mouseY = 0;
 
-		if (Input.GetButton ("Fire1"))
-		{						
-			mouseIn = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			float relativeX = mouseIn.x - transform.position.x;
-			float relativeY = mouseIn.y - transform.position.y;
-			mouseX = (relativeX) / 5;
-			mouseY = (relativeY) / 5;
-		}
 		// 4 - Movement per direction
-		bool shoot = Input.GetButton("Jump");
+		bool shoot = Input.GetButton("Fire1");
+		shoot |= Input.GetButton("Fire2");
 		movement = new Vector2(
-			speed.x * Mathf.Clamp (mouseX, -1, 1),
-			speed.y * Mathf.Clamp (mouseY, -1, 1) );
-			
+			speed.x * inputX,
+			speed.y * inputY );
 		// 5 - Shooting
 	
 		// Careful: For Mac users, ctrl + arrow is a bad idea
@@ -89,18 +77,13 @@ public class PlayerScript : MonoBehaviour {
 			transform.position.z
 		);
 
-
-
 		//End of update method
 	}
-
+	
 	void FixedUpdate()
 	{
 		// 6 - Move the game object
-		if (Input.GetButton ("Fire1"))
-		{
-			rigidbody2D.velocity = movement;
-		}
+		rigidbody2D.velocity = movement;
 	}
 
 	void OnCollisionEnter2D(Collision2D collision)

@@ -12,7 +12,6 @@ public class ShotScript : MonoBehaviour {
 	/// </summary>
 	public int damage = 1;
 
-
 	/// <summary>
 	/// Does projectile damage player or enemies?
 	/// </summary>
