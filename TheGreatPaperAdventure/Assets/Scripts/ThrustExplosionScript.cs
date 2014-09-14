@@ -12,13 +12,23 @@ public class ThrustExplosionScript : MonoBehaviour {
 	/// </summary>
 	public int damage = 2;
 
+	public float explosionLife = 0.5f;
+
+	private Animator animator;
+
+	void Awake()
+	{
+		animator = GetComponent<Animator> ();
+	}
+
 	/// <summary>
 	/// On enabling, we'll deactivate it in a set time.
 	/// </summary>
 	void OnEnable()
 	{
 		// 2 - Limited time to live to avoid leaks.
-		Invoke ("Destroy", 0.1f);
+		animator.Play ("thrusterExplosion");
+		Invoke ("Destroy", explosionLife);
 	}
 
 	/// <summary>

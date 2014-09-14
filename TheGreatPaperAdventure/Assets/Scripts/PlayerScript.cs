@@ -22,8 +22,20 @@ public class PlayerScript : MonoBehaviour {
 	// Dampening universal number.
 	public int damp = 5;
 
-	public float thrusterCD = 0.5f;
+	public float blastCD = 5f;
+	public float thrustCD = 0.5f;
 
+	private float thrusterCD = 0.5f;
+
+	bool notMoving()
+	{
+		if (rigidbody2D.velocity.x < 0.5 && rigidbody2D.velocity.y < 0.5 &&
+		    rigidbody2D.velocity.x > -0.5 && rigidbody2D.velocity.y > -0.5)
+		{
+			return true;
+		}
+		else return false;
+	}
 
 	// Update is called once per frame
 	void Update () {
@@ -33,15 +45,15 @@ public class PlayerScript : MonoBehaviour {
 		float inputY = Input.GetAxis ("Vertical");
 		*/
 		// 4 - Movement per direction
-		bool shoot = Input.GetButton("Jump");
+		bool shoot = Input.GetButton("Fire2");
 		// 5 - Shooting
 	
 		// Careful: For Mac users, ctrl + arrow is a bad idea
 		
-		if (shoot)
+		if (shoot && notMoving())
 		{
 			// This checks to see if there's a weaponscript on the player.
-			WeaponScript weapon = GetComponent<WeaponScript>();
+			WeaponScript weapon = GetComponentInChildren<WeaponScript>();
 			if (weapon != null)
 			{
 				// false because the player is not an enemy
@@ -101,7 +113,7 @@ public class PlayerScript : MonoBehaviour {
 			ThrusterScript thruster = GetComponent<ThrusterScript>();
 			if (thruster != null)
 			{
-				thruster.Push(relativeX, relativeY);
+				thruster.Push(relativeX, relativeY, mouseIn);
 			}
 			movement = new Vector2(
 				speed.x * Mathf.Clamp (inputX, -1, 1) ,
@@ -109,7 +121,22 @@ public class PlayerScript : MonoBehaviour {
 			// 6 - Move the game object
 			rigidbody2D.velocity = movement;
 
-			thrusterCD = 0.5f;
+			thrusterCD = thrustCD;
+		}
+
+		if (Input.GetButton("Jump") && thrusterCD <= 0 )
+		{
+			
+			ThrusterScript thruster = GetComponent<ThrusterScript>();
+			if (thruster != null)
+			{
+				thruster.Blast ();
+			}
+
+			movement = new Vector2(0, 0);
+			rigidbody2D.velocity = movement;
+
+			thrusterCD = blastCD;
 		}
 	}
 

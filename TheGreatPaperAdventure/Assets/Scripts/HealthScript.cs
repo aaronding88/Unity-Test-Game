@@ -48,6 +48,16 @@ public class HealthScript : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D otherCollider)
 	{
+
+		// Is this an explosion?
+		if (isEnemy)
+		{
+			ThrustExplosionScript thrust = otherCollider.gameObject.GetComponent<ThrustExplosionScript> ();
+			if (thrust != null) 
+			{
+				Damage (thrust.damage);
+			}
+		}
 		// Is this a shot?
 		ShotScript shot = 
 			otherCollider.gameObject.GetComponent<ShotScript> ();
@@ -61,6 +71,8 @@ public class HealthScript : MonoBehaviour {
 				// otherwise you will just remove the script.
 			}
 		}
+
+
 	}
 
 }
