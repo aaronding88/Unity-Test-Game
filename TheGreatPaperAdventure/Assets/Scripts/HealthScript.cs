@@ -13,7 +13,17 @@ public class HealthScript : MonoBehaviour {
 	/// Enemy or player?
 	/// </summary>
 	public bool isEnemy = true;
+	private int maxHp;
 
+	void Start()
+	{
+		maxHp = hp;
+	}
+
+	void OnActive()
+	{
+		hp = maxHp;
+	}
 	/// <summary>
 	/// Gets current health.
 	/// </summary>
@@ -41,7 +51,7 @@ public class HealthScript : MonoBehaviour {
 				gameObject.SetActive(false);
 			}
 			else {
-				Destroy(gameObject);
+				gameObject.SetActive(false);
 			}
 		}
 	}
