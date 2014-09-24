@@ -9,7 +9,9 @@ public class SpecialEffectsHelper : MonoBehaviour
 	/// Singleton
 	/// </summary>
 	public static SpecialEffectsHelper Instance;
-	
+
+	public ParticleSystem laserEffect;
+	public ParticleSystem laserEffectBlue;
 	public ParticleSystem smokeEffect;
 	public ParticleSystem fireEffect;
 	
@@ -38,7 +40,15 @@ public class SpecialEffectsHelper : MonoBehaviour
 		// Fire in the sky
 		instantiate(fireEffect, position);
 	}
-	
+	public void LaserHitBlue(Vector3 position)
+	{
+		instantiate (laserEffectBlue, position);
+	}
+	public void LaserHit(Vector3 position)
+	{
+		instantiate (laserEffect, position);
+	}
+
 	/// <summary>
 	/// Instantiate a Particle system from prefab
 	/// </summary>

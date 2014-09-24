@@ -16,7 +16,10 @@ public class SoundEffectsHelper : MonoBehaviour
 	public AudioClip playerShotSound;
 	public AudioClip enemyShotSound;
 	public AudioClip thrusterSound;
-	
+	public AudioClip absorbSound;
+	public AudioClip forcefieldSound;
+
+
 	void Awake()
 	{
 		// Register the singleton
@@ -44,6 +47,14 @@ public class SoundEffectsHelper : MonoBehaviour
 	public void MakeThrusterSound()
 	{
 		MakeSound (thrusterSound);
+	}
+	public void MakeForcefieldSound()
+	{
+		MakeSound (forcefieldSound);
+	}
+	public void MakeAbsorbSound()
+	{
+		MakeSound (absorbSound);
 	}
 
 	/// <summary>

@@ -9,29 +9,34 @@ public class HealthScript : MonoBehaviour {
 	/// </summary>
 	public int hp = 1;
 
+	private int maxHp = 1;
+
 	///<summary>
 	/// Enemy or player?
 	/// </summary>
 	public bool isEnemy = true;
-	private int maxHp;
 
-	void Start()
+	void Awake()
 	{
 		maxHp = hp;
 	}
-
-	void OnActive()
+	
+	/// <summary>
+	/// Gets max health.
+	/// </summary>
+	/// <returns>Max health.</returns>
+	public float getMaxHealth()
 	{
-		hp = maxHp;
+		return (float)maxHp;
 	}
+
 	/// <summary>
 	/// Gets current health.
 	/// </summary>
 	/// <returns>Current health.</returns>
-	
-	public int getHealth()
+	public float getHealth()
 	{
-		return hp;
+		return (float) hp;
 	}
 
 	///<summary>
@@ -52,7 +57,9 @@ public class HealthScript : MonoBehaviour {
 			}
 			else {
 				gameObject.SetActive(false);
+				hp = maxHp;
 			}
+
 		}
 	}
 
@@ -66,6 +73,7 @@ public class HealthScript : MonoBehaviour {
 			if (thrust != null) 
 			{
 				Damage (thrust.damage);
+				gameObject.GetComponent<NewEnemyScript>().changeHealth();
 			}
 		}
 		// Is this a shot?
@@ -73,12 +81,18 @@ public class HealthScript : MonoBehaviour {
 			otherCollider.gameObject.GetComponent<ShotScript> ();
 		if (shot != null) {
 			// Avoid friendly fire
-			if (shot.isEnemyShot != isEnemy) {
+			if (shot.isEnemyShot && !isEnemy) {
 				Damage (shot.damage);
+				SpecialEffectsHelper.Instance.LaserHitBlue(shot.transform.position);
+				shot.gameObject.SetActive (false);
+			}
+			else if (!shot.isEnemyShot && isEnemy)
+			{
+				Damage (shot.damage);
+				gameObject.GetComponent<NewEnemyScript>().changeHealth();
+				SpecialEffectsHelper.Instance.LaserHit(shot.transform.position);
 				// Destroy the shot
 				shot.gameObject.SetActive(false); 
-				// Remember to always target the GAME OBJECT, 
-				// otherwise you will just remove the script.
 			}
 		}
 

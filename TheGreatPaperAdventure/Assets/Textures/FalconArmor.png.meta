@@ -1,0 +1,158 @@
+fileFormatVersion: 2
+guid: c69e5e57f7f16934a88123393c3d8e52
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: FalconArmor
+    21300002: FalconArmor_0
+    21300004: FalconArmor_1
+    21300006: FalconArmor_2
+    21300008: FalconArmor_3
+    21300010: FalconArmor_4
+    21300012: FalconArmor_5
+    21300014: FalconArmor_6
+    21300016: FalconArmor_7
+    21300018: FalconArmor_8
+    21300020: FalconArmor_9
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: -1
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: FalconArmor_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 72
+        width: 69
+        height: 72
+      alignment: 9
+      pivot: {x: .430000007, y: .550736845}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FalconArmor_1
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 72
+        width: 62
+        height: 72
+      alignment: 9
+      pivot: {x: .368863016, y: .543488741}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FalconArmor_2
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 72
+        width: 69
+        height: 72
+      alignment: 9
+      pivot: {x: .469999999, y: .550000012}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FalconArmor_3
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 72
+        width: 69
+        height: 72
+      alignment: 9
+      pivot: {x: .49000001, y: .540000021}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FalconArmor_4
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 72
+        width: 69
+        height: 72
+      alignment: 9
+      pivot: {x: .419999987, y: .540000021}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FalconArmor_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 69
+        height: 72
+      alignment: 9
+      pivot: {x: .569999993, y: .529999971}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FalconArmor_6
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 0
+        width: 69
+        height: 72
+      alignment: 9
+      pivot: {x: .5, y: .529999971}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FalconArmor_7
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 0
+        width: 69
+        height: 72
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FalconArmor_8
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 0
+        width: 69
+        height: 72
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: FalconArmor_9
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 0
+        width: 69
+        height: 72
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 

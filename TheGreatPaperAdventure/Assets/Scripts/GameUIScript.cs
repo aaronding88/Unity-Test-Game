@@ -40,10 +40,7 @@ public class GameUIScript : MonoBehaviour
 	}
 	void OnGUI()
 	{
-
-		// TODO: Hardcoded, needs to adjust based on player health.
-		currWidth = pHealth.getHealth () * 25;
-
+		currWidth = (pHealth.getHealth()/pHealth.getMaxHealth()) * totalWidth;
 		if (currWidth != totalWidth)
 		{
 			// Calculates player position from world to screen
@@ -59,6 +56,7 @@ public class GameUIScript : MonoBehaviour
 			GUI.DrawTexture(new Rect(
 				calculations.x + offsetX, -calculations.y + Screen.height + offsetY,
 				currWidth, totalHeight), currHealth, ScaleMode.StretchToFill);
+
 		}
 	}
 }

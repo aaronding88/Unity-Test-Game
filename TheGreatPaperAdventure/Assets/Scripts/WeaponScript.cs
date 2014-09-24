@@ -13,6 +13,8 @@ public class WeaponScript : MonoBehaviour {
 	/// </summary>
 	public float shootingRate = 0.25f;
 
+	public bool staggeredShots = false;
+
 	// ---------------------------
 	// 2 - Cooldown
 	// ---------------------------
@@ -21,6 +23,10 @@ public class WeaponScript : MonoBehaviour {
 
 	void Start () {
 		shootCooldown = 0f;
+		if (staggeredShots)
+		{
+			shootingRate *= Random.Range(0.75f, 1.25f);
+		}
 	}
 
 	void Update () {

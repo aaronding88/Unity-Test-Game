@@ -22,35 +22,123 @@ public class PlayerScript : MonoBehaviour {
 	// Dampening universal number.
 	public int damp = 5;
 
+	public double weaponCooldownDamp = 0.5;
 	public float blastCD = 5f;
 	public float thrustCD = 0.5f;
 
-	private float thrusterCD = 0.5f;
+	private float thrusterMaxCD = 5;
+	private float thrusterCurrCD = 0.5f;
+	private float forcefieldMaxCD = 10;
+	private float forcefieldCurrCD = 0;
 
-	bool notMoving()
+	private bool weaponReady;
+
+	public bool thrusterReady()
 	{
-		if (rigidbody2D.velocity.x < 0.5 && rigidbody2D.velocity.y < 0.5 &&
-		    rigidbody2D.velocity.x > -0.5 && rigidbody2D.velocity.y > -0.5)
-		{
-			return true;
-		}
+		if (thrusterCurrCD <= 0) return true;
 		else return false;
+	}
+
+	public bool weapReady()
+	{
+		return weaponReady;
+	}
+
+	public bool forcefieldReady()
+	{
+		if (forcefieldCurrCD <= 0) return true;
+		else return false;
+	}
+
+	private void notMoving()
+	{
+		if (rigidbody2D.velocity.x < weaponCooldownDamp && rigidbody2D.velocity.y < weaponCooldownDamp &&
+		    rigidbody2D.velocity.x > -weaponCooldownDamp && rigidbody2D.velocity.y > -weaponCooldownDamp)
+		{
+			weaponReady = true;
+		}
+		else {
+			weaponReady = false;
+		}
+	}
+	/// <summary>
+	/// Fires the forcefield.
+	/// </summary>
+	void deployForcefield()
+	{
+		Vector3 mouseIn = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+		float relativeX = mouseIn.x - transform.position.x;
+		float relativeY = mouseIn.y - transform.position.y;
+
+		ForcefieldWeaponScript forcefield = GetComponent<ForcefieldWeaponScript>();
+		if (forcefield != null)
+		{
+			forcefield.Shield(relativeX, relativeY, mouseIn);
+		}
+		SoundEffectsHelper.Instance.MakeForcefieldSound ();
+
+		forcefieldCurrCD = forcefieldMaxCD;
+	}
+
+	/// <summary>
+	/// Blasts thrusters move
+	/// </summary>
+	void thrusterBlast()
+	{
+		ThrusterScript thruster = GetComponent<ThrusterScript>();
+		if (thruster != null)
+		{
+			thrusterMaxCD = blastCD;
+			thruster.Blast ();
+		}
+		
+		movement = new Vector2(0, 0);
+		rigidbody2D.velocity = movement;
+		
+		thrusterCurrCD = thrusterMaxCD;
+	}
+
+	/// <summary>
+	/// Uses thruster to dodge.
+	/// </summary>
+
+	void thrusterDodge()
+	{
+		Vector3 mouseIn = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+		float relativeX = mouseIn.x - transform.position.x;
+		float relativeY = mouseIn.y - transform.position.y;
+		// Movement dampening.
+		float inputX = relativeX / damp;
+		float inputY = relativeY / damp;
+		
+		ThrusterScript thruster = GetComponent<ThrusterScript>();
+		if (thruster != null)
+		{
+			thrusterMaxCD = thrustCD;
+			thruster.Push(relativeX, relativeY, mouseIn);
+		}
+		movement = new Vector2(
+			speed.x * Mathf.Clamp (inputX, -1, 1) ,
+			speed.y * Mathf.Clamp (inputY, -1, 1) );
+		// 6 - Move the game object
+		rigidbody2D.velocity = movement;
+		
+		thrusterCurrCD = thrusterMaxCD;
+	}
+
+	void Start()
+	{
+		this.gameObject.name = "Player";
 	}
 
 	// Update is called once per frame
 	void Update () {
-		// 3 - Retrieve axis information
-		/*
-		float inputX = Input.GetAxis ("Horizontal");
-		float inputY = Input.GetAxis ("Vertical");
-		*/
-		// 4 - Movement per direction
-		bool shoot = Input.GetButton("Fire2");
-		// 5 - Shooting
-	
+
+		// Updates the weaponReady bool.
+		notMoving ();
+
 		// Careful: For Mac users, ctrl + arrow is a bad idea
-		
-		if (shoot && notMoving())
+		if (Input.GetButton("Fire2") && weaponReady)
 		{
 			// This checks to see if there's a weaponscript on the player.
 			WeaponScript weapon = GetComponentInChildren<WeaponScript>();
@@ -58,10 +146,11 @@ public class PlayerScript : MonoBehaviour {
 			{
 				// false because the player is not an enemy
 				weapon.Attack(false);
-				// Shooting SFX. Taken out because it wasn't syncing with
-				// the cooldown.
-				// SoundEffectsHelper.Instance.MakePlayerShotSound();
 			}
+		}		
+		if (Input.GetButton ("Fire3") && forcefieldCurrCD <= 0 )
+		{
+			deployForcefield();
 		}
 
 		// 6 - Make sure we are not outside the camera bounds.
@@ -92,8 +181,13 @@ public class PlayerScript : MonoBehaviour {
 			transform.position.z
 		);
 
-		if (thrusterCD > 0) {
-			thrusterCD -= Time.deltaTime;
+		if (thrusterCurrCD > 0) {
+			thrusterCurrCD -= Time.deltaTime;
+		}
+
+		if (forcefieldCurrCD > 0)
+		{
+			forcefieldCurrCD -= Time.deltaTime;
 		}
 
 		//End of update method
@@ -101,42 +195,14 @@ public class PlayerScript : MonoBehaviour {
 	
 	void FixedUpdate()
 	{
-		if (Input.GetButton("Fire1") && thrusterCD <= 0 )
+		if (Input.GetButton("Fire1") && thrusterCurrCD <= 0 )
 		{
-			Vector3 mouseIn = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-			float relativeX = mouseIn.x - transform.position.x;
-			float relativeY = mouseIn.y - transform.position.y;
-			// Movement dampening.
-			float inputX = relativeX / damp;
-			float inputY = relativeY / damp;
-
-			ThrusterScript thruster = GetComponent<ThrusterScript>();
-			if (thruster != null)
-			{
-				thruster.Push(relativeX, relativeY, mouseIn);
-			}
-			movement = new Vector2(
-				speed.x * Mathf.Clamp (inputX, -1, 1) ,
-				speed.y * Mathf.Clamp (inputY, -1, 1) );
-			// 6 - Move the game object
-			rigidbody2D.velocity = movement;
-
-			thrusterCD = thrustCD;
+			thrusterDodge();
 		}
 
-		if (Input.GetButton("Jump") && thrusterCD <= 0 )
+		if (Input.GetButton("Jump") && thrusterCurrCD <= 0 )
 		{
-			
-			ThrusterScript thruster = GetComponent<ThrusterScript>();
-			if (thruster != null)
-			{
-				thruster.Blast ();
-			}
-
-			movement = new Vector2(0, 0);
-			rigidbody2D.velocity = movement;
-
-			thrusterCD = blastCD;
+			thrusterBlast();
 		}
 	}
 
@@ -145,7 +211,7 @@ public class PlayerScript : MonoBehaviour {
 		bool damagePlayer = false;
 
 		// Collision with enemy
-		EnemyScript enemy = collision.gameObject.GetComponent<EnemyScript> ();
+		NewEnemyScript enemy = collision.gameObject.GetComponent<NewEnemyScript> ();
 		if (enemy != null) 
 		{
 			// Kill the enemy
@@ -169,6 +235,37 @@ public class PlayerScript : MonoBehaviour {
 		// Add the script to the parent because the current game
 		// object (the player) is likely going to be destroyed 
 		// immediately, which defeats the purpose of the script.
-		transform.parent.gameObject.AddComponent<GameOverScript> ();
+		transform.parent.gameObject.GetComponent<GameOverScript> ().enabled = true;
 	}
+	/// <summary>
+	/// Returns the thruster's cooldown.
+	/// </summary>
+	/// <returns>The current Cooldown.</returns>
+	public float getCD(){
+		return thrusterCurrCD;
+	}
+	/// <summary>
+	/// Returns the thruster's total cooldown.
+	/// </summary>
+	/// <returns>The total Cooldown.</returns>
+	public float getMaxCD(){
+		return thrusterMaxCD;
+	}
+
+	/// <summary>
+	/// Returns the forcefield's cooldown.
+	/// </summary>
+	/// <returns>The current Cooldown.</returns>
+	public float getForcefieldCD(){
+		return forcefieldCurrCD;
+	}
+	/// <summary>
+	/// Returns the forcefield's total cooldown.
+	/// </summary>
+	/// <returns>The total Cooldown.</returns>
+	public float getForcefieldMaxCD(){
+		return forcefieldMaxCD;
+	}
+	
+
 }

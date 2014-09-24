@@ -16,18 +16,34 @@ public class MoveScript : MonoBehaviour {
 	/// Moving direction.
 	/// </summary>
 	public Vector2 direction = new Vector2(-1, 0);
-	
+
+	public bool randSpeed;
+
+	private float speedMod = 1;
 	private Vector2 movement;
 	// Notes on Vector2: This is a Vector x Vector operation,
 	// so even though Vector2 has 10x, 10y, but this way it can
 	// be manipulated individually, so we can tweak individual
 	// xSpeed, ySpeed, xDirection, and yDirection.
+	public void setSpeed(bool isRandom)
+	{
+		if (isRandom)
+		{
+			speedMod = Random.Range (0.5f, 1.5f);
+		}
+		else 
+		{
+			speedMod = 1;
+		}
+		randSpeed = isRandom;
+
+	}
 
 	void Update () {
 		// 2 - Movement
 		movement = new Vector2 (
-			speed.x * direction.x,
-			speed.y * direction.y);
+		speed.x * direction.x * speedMod,
+		speed.y * direction.y * speedMod);
 	}
 
 	void FixedUpdate() {
