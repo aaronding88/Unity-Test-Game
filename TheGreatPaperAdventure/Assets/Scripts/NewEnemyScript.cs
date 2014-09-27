@@ -11,15 +11,7 @@ public class NewEnemyScript : MonoBehaviour {
 	private bool beenOnScreen = false;
 	private WeaponScript[] weapons;
 	public Animator healthAnimation; 
-
-	public void changeHealth()
-	{
-		if (healthAnimation != null)
-		{
-			healthAnimation.SetFloat ("Health", gameObject.GetComponent<HealthScript> ().getHealth ());
-		}
-	}
-
+		
 	void Awake()
 	{
 		// Retrieve the weapon only once
@@ -31,7 +23,7 @@ public class NewEnemyScript : MonoBehaviour {
 		// Auto-fire
 		foreach (WeaponScript weapon in weapons)
 		{
-			if (weapon != null && weapon.enabled && weapon.CanAttack)
+			if (weapon != null && weapon.enabled && weapon.CanAttack  && GameObject.Find ("Player"))
 			{		
 				weapon.Attack(true);
 				
@@ -52,6 +44,10 @@ public class NewEnemyScript : MonoBehaviour {
 		{
 			gameObject.SetActive (false);
 			beenOnScreen = false;
+		}
+		if (healthAnimation != null)
+		{
+			healthAnimation.SetFloat ("Health", gameObject.GetComponent<HealthScript> ().getHealth ());
 		}
 	}
 }

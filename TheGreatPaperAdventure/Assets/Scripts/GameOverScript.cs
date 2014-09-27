@@ -24,7 +24,7 @@ public class GameOverScript : MonoBehaviour
 
 	string convertScoreToDisplay(float score)
 	{
-		return (string.Format ("{0:00}:{1:00}:{2:00}", (score / 60), (int)(score % 60), (score - (float)Mathf.Floor (score))*100) );
+		return (string.Format ("{0:00}:{1:00}:{2:00}", ((int)score / 60), (int)(score % 60), (score - (float)Mathf.Floor (score))*100) );
 	}
 
 	/// <summary>

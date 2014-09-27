@@ -16,6 +16,8 @@ public class HealthScript : MonoBehaviour {
 	/// </summary>
 	public bool isEnemy = true;
 
+	public bool isNeutral = false;
+
 	void Awake()
 	{
 		maxHp = hp;
@@ -73,7 +75,6 @@ public class HealthScript : MonoBehaviour {
 			if (thrust != null) 
 			{
 				Damage (thrust.damage);
-				gameObject.GetComponent<NewEnemyScript>().changeHealth();
 			}
 		}
 		// Is this a shot?
@@ -81,7 +82,7 @@ public class HealthScript : MonoBehaviour {
 			otherCollider.gameObject.GetComponent<ShotScript> ();
 		if (shot != null) {
 			// Avoid friendly fire
-			if (shot.isEnemyShot && !isEnemy) {
+			if (shot.isEnemyShot && !isEnemy || isNeutral) {
 				Damage (shot.damage);
 				SpecialEffectsHelper.Instance.LaserHitBlue(shot.transform.position);
 				shot.gameObject.SetActive (false);
@@ -89,13 +90,20 @@ public class HealthScript : MonoBehaviour {
 			else if (!shot.isEnemyShot && isEnemy)
 			{
 				Damage (shot.damage);
-				gameObject.GetComponent<NewEnemyScript>().changeHealth();
 				SpecialEffectsHelper.Instance.LaserHit(shot.transform.position);
 				// Destroy the shot
 				shot.gameObject.SetActive(false); 
 			}
 		}
-
+		if (isNeutral){
+			HealthScript colHealth = otherCollider.gameObject.GetComponent<HealthScript> ();
+			if (colHealth != null)
+			{
+				Damage (hp);
+				if (!colHealth.isEnemy) colHealth.Damage(1);
+				else colHealth.Damage(colHealth.hp);
+			}
+		}
 
 	}
 

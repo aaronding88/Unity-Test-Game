@@ -32,6 +32,7 @@ public class PlayerScript : MonoBehaviour {
 	private float forcefieldCurrCD = 0;
 
 	private bool weaponReady;
+	private bool canBlast = true;
 
 	public bool thrusterReady()
 	{
@@ -80,6 +81,11 @@ public class PlayerScript : MonoBehaviour {
 		forcefieldCurrCD = forcefieldMaxCD;
 	}
 
+	void resetBlast()
+	{
+		canBlast = true;
+	}
+
 	/// <summary>
 	/// Blasts thrusters move
 	/// </summary>
@@ -89,7 +95,9 @@ public class PlayerScript : MonoBehaviour {
 		if (thruster != null)
 		{
 			thrusterMaxCD = blastCD;
+			Invoke("resetBlast", thrusterMaxCD);
 			thruster.Blast ();
+			canBlast = false;
 		}
 		
 		movement = new Vector2(0, 0);
@@ -200,7 +208,7 @@ public class PlayerScript : MonoBehaviour {
 			thrusterDodge();
 		}
 
-		if (Input.GetButton("Jump") && thrusterCurrCD <= 0 )
+		if (Input.GetButton("Jump") && canBlast )
 		{
 			thrusterBlast();
 		}
@@ -236,6 +244,7 @@ public class PlayerScript : MonoBehaviour {
 		// object (the player) is likely going to be destroyed 
 		// immediately, which defeats the purpose of the script.
 		transform.parent.gameObject.GetComponent<GameOverScript> ().enabled = true;
+		//GameObject.Find ("Music").SetActive (false);
 	}
 	/// <summary>
 	/// Returns the thruster's cooldown.
