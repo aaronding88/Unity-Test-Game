@@ -162,6 +162,7 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -200,6 +201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 2
   isEnemy: 1
+  isNeutral: 0
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -238,8 +240,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18c24dd129c767c45b41f121fb372312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootingRate: .75
-  staggeredShots: 0
+  shootingRate: 2.5
+  staggeredShots: 1
 --- !u!114 &11400012
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -252,7 +254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clampedShots: 1
-  clampDegree: 5
+  clampDegree: 45
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

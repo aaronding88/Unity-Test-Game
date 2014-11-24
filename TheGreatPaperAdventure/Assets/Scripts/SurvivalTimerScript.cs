@@ -11,6 +11,8 @@ public class SurvivalTimerScript : MonoBehaviour {
 	private float milliseconds;
 	private float internalTime;
 
+	private int points;
+
 	private HealthScript health;
 
 	public float getTime()
@@ -20,6 +22,23 @@ public class SurvivalTimerScript : MonoBehaviour {
 	public float getMS()
 	{
 		return milliseconds;
+	}
+
+	/// <summary>
+	/// Point Setter.
+	/// </summary>
+	/// <param name="Points">Points.</param>
+	public void addPoints( int pts )
+	{
+		points += pts;
+	}
+	/// <summary>
+	/// Points getter.
+	/// </summary>
+	/// <returns>Points.</returns>
+	public int getPoints()
+	{
+		return points;
 	}
 	
 	void Start()

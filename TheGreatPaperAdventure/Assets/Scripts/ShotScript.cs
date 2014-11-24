@@ -13,9 +13,19 @@ public class ShotScript : MonoBehaviour {
 	public int damage = 1;
 
 	/// <summary>
+	/// Time the particle stays alive.
+	/// </summary>
+	public float duration = 10;
+
+	/// <summary>
 	/// Does projectile damage player or enemies?
 	/// </summary>
 	public bool isEnemyShot = false;
+
+	public void setEnemyShot(bool shot)
+	{
+		isEnemyShot = shot;
+	}
 
 	/// <summary>
 	/// On enabling, we'll deactivate it in a set time.
@@ -23,7 +33,7 @@ public class ShotScript : MonoBehaviour {
 	void OnEnable()
 	{
 		// 2 - Limited time to live to avoid leaks.
-		Invoke ("Destroy", 3f);
+		Invoke ("Destroy", duration);
 	}
 
 	/// <summary>

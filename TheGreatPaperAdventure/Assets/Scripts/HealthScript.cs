@@ -22,7 +22,15 @@ public class HealthScript : MonoBehaviour {
 	{
 		maxHp = hp;
 	}
-	
+
+	/// <summary>
+	/// Sets the health back to full.
+	/// </summary>
+	public void resetHP ()
+	{
+		hp = maxHp;
+	}
+
 	/// <summary>
 	/// Gets max health.
 	/// </summary>
@@ -45,7 +53,7 @@ public class HealthScript : MonoBehaviour {
 	/// Inflicts damage and checks if the object should be destroyed
 	/// </summary>
 	/// <param name="damageCount"></param>
-	public void Damage(int damageCount){
+	public void Damage(int damageCount, int points){
 		hp -= damageCount;
 
 		if (hp <= 0) {
@@ -61,6 +69,7 @@ public class HealthScript : MonoBehaviour {
 				gameObject.SetActive(false);
 				hp = maxHp;
 			}
+			GameObject.Find ("Timer").GetComponent<SurvivalTimerScript>().addPoints(points);
 
 		}
 	}
@@ -74,7 +83,7 @@ public class HealthScript : MonoBehaviour {
 			ThrustExplosionScript thrust = otherCollider.gameObject.GetComponent<ThrustExplosionScript> ();
 			if (thrust != null) 
 			{
-				Damage (thrust.damage);
+				Damage (thrust.damage, 1);
 			}
 		}
 		// Is this a shot?
@@ -83,13 +92,13 @@ public class HealthScript : MonoBehaviour {
 		if (shot != null) {
 			// Avoid friendly fire
 			if (shot.isEnemyShot && !isEnemy || isNeutral) {
-				Damage (shot.damage);
+				Damage (shot.damage, 0);
 				SpecialEffectsHelper.Instance.LaserHitBlue(shot.transform.position);
 				shot.gameObject.SetActive (false);
 			}
 			else if (!shot.isEnemyShot && isEnemy)
 			{
-				Damage (shot.damage);
+				Damage (shot.damage, 2);
 				SpecialEffectsHelper.Instance.LaserHit(shot.transform.position);
 				// Destroy the shot
 				shot.gameObject.SetActive(false); 
@@ -99,9 +108,9 @@ public class HealthScript : MonoBehaviour {
 			HealthScript colHealth = otherCollider.gameObject.GetComponent<HealthScript> ();
 			if (colHealth != null)
 			{
-				Damage (hp);
-				if (!colHealth.isEnemy) colHealth.Damage(1);
-				else colHealth.Damage(colHealth.hp);
+				Damage (hp, 0);
+				if (!colHealth.isEnemy) colHealth.Damage(1, 0);
+				else colHealth.Damage(colHealth.hp, 0);
 			}
 		}
 

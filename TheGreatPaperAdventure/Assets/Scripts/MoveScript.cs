@@ -21,10 +21,21 @@ public class MoveScript : MonoBehaviour {
 
 	private float speedMod = 1;
 	private Vector2 movement;
+
 	// Notes on Vector2: This is a Vector x Vector operation,
 	// so even though Vector2 has 10x, 10y, but this way it can
 	// be manipulated individually, so we can tweak individual
 	// xSpeed, ySpeed, xDirection, and yDirection.
+	public Vector2 getDirection()
+	{
+		return direction;
+	}
+
+	public void setDirection(float x, float y)
+	{
+		direction = new Vector2 (x, y);
+	}
+
 	public void setSpeed(bool isRandom)
 	{
 		if (isRandom)
@@ -50,4 +61,5 @@ public class MoveScript : MonoBehaviour {
 		// Apply movement to the rigidbody
 		rigidbody2D.velocity = movement;
 	}
+
 }

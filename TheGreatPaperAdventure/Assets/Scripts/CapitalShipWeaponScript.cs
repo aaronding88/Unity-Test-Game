@@ -12,7 +12,7 @@ public class CapitalShipWeaponScript : MonoBehaviour {
 		targetHealth = otherCollider.gameObject.GetComponent<HealthScript> ();
 		if (targetHealth != null)
 		{
-			targetHealth.Damage (damage);
+			targetHealth.Damage (damage, 0);
 		}
 	}
 

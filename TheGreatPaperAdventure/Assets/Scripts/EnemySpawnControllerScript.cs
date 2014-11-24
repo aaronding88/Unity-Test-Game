@@ -20,25 +20,30 @@ public class EnemySpawnControllerScript : MonoBehaviour {
 
 	//public bool willGrow = true;
 	
-
+	// Fighter variables, such as respawn time.
 	public float fighterCooldown = 3f;
 	private float fighterTimer;
 	private bool fightersIncoming = true;
 
+	// Asteroid variables, such as respawn time.
 	public float asteroidCooldown = 3f;
 	private float asteroidTimer;
 	private bool asteroidsIncoming = false;
 
+	// Timer variables, which affect difficulty.
 	private SurvivalTimerScript timerScript; 
 	private int difficulty = 1;
 	private float modifier = 1;
 
 	private bool disengaged = false;
 
+	/// <summary>
+	/// Spawns asteroids.
+	/// </summary>
 	void spawnAsteroids()
 	{
-		
 		if (asteroidTimer <=0 ){
+			// Cycles through the pooled asteroids, finding the one that's recently inactive, and activating it.
 			for (int i = 0; i < pooledAsteroids.Count; i++)
 			{
 				if (!pooledAsteroids[i].activeInHierarchy)
@@ -53,22 +58,20 @@ public class EnemySpawnControllerScript : MonoBehaviour {
 					return;
 				}
 			}
-			
-			
 		} 
-		
+
+		// Timer mechanic.
 		asteroidTimer -= Time.deltaTime;
 	}
 
 	/// <summary>
 	/// Spawns the fighters
 	/// Fighters come from the left, and slowly move to the right.
-	/// IDEA: Once the fighter reaches the end, they come back upgraded, and shoot at the edge of the map.
 	/// Spawn Mechanics: Constant spawn, affected by difficulty.
 	/// </summary>
 	void SpawnFighters()
 	{
-
+		// Cycles through the pooled asteroids, finding the one that's recently inactive, and activating it.
 		if (fighterTimer <=0 ){
 			for (int i = 0; i < pooledFighters.Count; i++)
 			{
@@ -89,8 +92,8 @@ public class EnemySpawnControllerScript : MonoBehaviour {
 			}
 			
 			
-		} 
-		
+		}
+		// Timer mechanic.
 		fighterTimer -= Time.deltaTime;
 	}
 
@@ -180,7 +183,10 @@ public class EnemySpawnControllerScript : MonoBehaviour {
 	}
 
 	void Update(){
+
+		// Checks the difficulty.
 		setDifficulty ();
+
 		if (fightersIncoming) SpawnFighters ();
 		if (asteroidsIncoming) spawnAsteroids();
 
